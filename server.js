@@ -1,32 +1,26 @@
 const express = require('express');
 const path = require('path');
-// const { title } = require('process');
+
 const moment = require('moment')
 const uuid = require('uuid')
 const fs = require('fs');
 
 
-const app = process.env.PORT || express();
-const   PORT = 3000;
 
-fs.readFile('db.json', function (err, buf){
-    console.log(buf.toString());
-});
-app.use(express.urlencoded({ extended: false }));
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+
+
+app.use(express.static('public'));
+//handle url encoded data
+app.use(express.urlencoded({ extended: true }));
+//body parser middleware 
 app.use(express.json());
 
+// app.use('/api', apiRoutes)
+// app.use('/', htmlRoutes)
 
-
-
-
-app.get('/api/notes/:id', (req, res) => {
-   const found = notes.some(notes => notes.id === parseInt(req.params.id ));
-   if (found) {
-     res.json(notes.filter(notes => notes.id === parseInt(req.params.id )));
-} else {
-    res.status(400).json({ msg: `No note with the id of ${req.params.id}`})
-}
-});
 
 
 
@@ -36,43 +30,50 @@ const logger = (req, res, next) => {
 }
 // app.use(logger);
 
-const notes = [
-    {   id: 1,
-        noteTitle: 'tuesday before 7',
-        noteText: 'need to take out the trash'
-    },
-    {   id: 2,
-        noteTitle: 'wednesday at 3',
-        noteText: 'whange winter tires at myers'
-    },
-    {   id: 3,
-        noteTitle: 'thursday at 1',
-        noteText: 'physio with devan'
-    }
-]
 
 
+app.get('/api/notes', (req, res) => {
+    fs.readFile('db/db.json', 'utf8', (err, data) => {
+        if (err) {
+            return console.log(err);
+        }
+        console.log(data);
+        return data;
+    });
+});
 
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
+      
 
-app.get('/notes', (req, res) => res.sendFile(path.join(__dirname, 'notes.html')));
 
-app.get('/api/notes', (req, res) => res.json(notes));
 
 app.post('/api/notes', (req, res) => {
+    const noteList = JSON.parse(fs.readFileSync("db/db.json", "utf8"));
     const newNote = {
         id: uuid.v4(),
         title: req.body.noteTitle,
         text: req.body.noteText,
         status: 'active'
-    }
-
+    };
     console.log(newNote);
 
-    notes.push(newNote);
+    noteList.push(newNote);
+    fs.writeFileSync("db/db.json", "utf8");
 
-    res.json(notes);
+    return noteList;
 });
+
+// app.get('/api/notes/:id', (req, res) => {
+//     const found = noteList.some(noteList => noteList.id === parseInt(req.params.id ));
+//     if (found) {
+//       res.json(notes.filter(noteList => noteList.id === parseInt(req.params.id )));
+//  } else {
+//      res.status(400).json({ msg: `No note with the id of ${req.params.id}`})
+//  }
+//  });
+
+//  fs.readFile('db.json', function (err, buf){
+//     console.log(buf.toString());
+// });
 
 
 
