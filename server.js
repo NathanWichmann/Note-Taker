@@ -5,10 +5,7 @@ const express = require('express');
 const path = require('path');
 //brings in the file sharing to read and write 
 const fs = require('fs');
-//brings in the notelist from index.js to read the file in the db.json
 
-//allows the files to be put in seperate folders 
-// const router = require('express').Router();
 
 //creates the app variable for express 
 const app = express();
@@ -23,10 +20,10 @@ app.use(express.json());
 const htmlRoutes = require("./routes/htmlRoutes")
 const apiRoutes = require("./routes/apiRoutes")
 
-//connects to the notes response to the html
+//brings the html routes and api routes to the server to use 
 app.use("/", htmlRoutes);
 app.use("/api", apiRoutes);
 
 
-
+//connects the server on the above port
 app.listen(PORT, () => console.log(`server started on ${PORT}`));

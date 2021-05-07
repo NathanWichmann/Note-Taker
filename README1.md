@@ -4,5 +4,8 @@ This repository (Note Taker) is an educational homework assignment from the CARL
 
 # Link to the Deployed Application on Heroku
 <a href="https://shielded-mesa-14413.herokuapp.com/">Heroku App</a>
+![image](https://user-images.githubusercontent.com/77902368/117516978-a8e56e80-af68-11eb-8185-4e59575fe8af.png)
+![Screenshot (85)](https://user-images.githubusercontent.com/77902368/117517137-0974ab80-af69-11eb-87cd-6348762fe953.png)
+
 
 
